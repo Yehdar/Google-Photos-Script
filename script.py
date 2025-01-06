@@ -1,13 +1,11 @@
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 import pytz
 
 # Define the current directory
 photo_dir = os.getcwd()  
 
-# Define the timezone for conversion
-utc = pytz.utc
 est = pytz.timezone("America/New_York")  # Correct timezone for Eastern Time
 
 for filename in os.listdir(photo_dir):
@@ -24,7 +22,7 @@ for filename in os.listdir(photo_dir):
             continue
         
         # Convert the timestamp to EST
-        utc_time = datetime.utcfromtimestamp(int(photo_time)).replace(tzinfo=utc)
+        utc_time = datetime.fromtimestamp(int(photo_time), tz=timezone.utc)  # Use timezone.utc here
         est_time = utc_time.astimezone(est)
         formatted_date = est_time.strftime("%Y%m%d_%H%M%S")
         
